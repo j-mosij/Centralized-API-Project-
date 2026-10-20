@@ -1,0 +1,39 @@
+apiVersion: "warp.network/v1alpha1"
+kind: "ApiTile"
+metadata:
+ name: "bytebeat-synth-engine"
+ author: "j.mosij"
+ category: "generation" # Options: generation, data-driven, fast, ml
+ version: "1.0.2"
+
+spec:
+ # 1. Routing & Backend Execution
+ endpoint:
+   protocol: "websocket" # or "rest", "sse"
+   sourceUrl: "https://nodes.warp.network/compute/bytebeat"
+   timeoutMs: 2500
+
+ # 2. Dynamic Pricing & Market Rules
+ economics:
+   pricingModel: "supply-demand-curve"
+   baseCostTokens: 0.05
+   maxSupplyCapacity: 150
+   currentDemandMetric: "active-streams"
+   royaltySplit:
+     creator: 0.85
+     networkNode: 0.15
+
+ # 3. Client-Side Rendering (The Tile/Widget)
+ uiComponent:
+   scriptTarget: "https://warp.network/tiles/loader/bytebeat-v1.js"
+   defaultTheme: "dark"
+   dimensions:
+     width: "100%"
+     height: "180px"
+   supportedAttributes:
+     - name: "data-preset"
+       type: "string"
+       default: "cyber-crunch"
+     - name: "data-sample-rate"
+       type: "number"
+       default: 44100
